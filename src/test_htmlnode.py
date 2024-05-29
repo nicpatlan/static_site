@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HtmlNode, LeafNode
+from htmlnode import HtmlNode, LeafNode, ParentNode
 
 class TestHtmlNode(unittest.TestCase):
     def test_props_to_html(self):
@@ -29,6 +29,20 @@ class TestHtmlNode(unittest.TestCase):
         self.assertEqual(node7.to_html(), "no tags means its a raw string")
 
         self.assertRaises(ValueError, LeafNode().to_html)
+
+    def test_parentnode_to_html(self):
+        node = ParentNode(
+                "p",
+                [
+                    LeafNode("b", "This text is bold!"),
+                    LeafNode("i", "This text is fancy!"),
+                    LeafNode(value="No tags for this text!")
+                ],
+        )
+        self.assertEqual(node.to_html(), "<p><b>This text is bold!</b><i>This text is fancy!</i>No tags for this text!</p>")
+
+        self.assertRaises(ValueError, ParentNode().to_html)
+        self.assertRaises(ValueError, ParentNode(children=[LeafNode("b", "Bold text")]).to_html)
 
 if __name__ == "__main__":
     unittest.main()
