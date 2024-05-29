@@ -41,6 +41,23 @@ class TestHtmlNode(unittest.TestCase):
         )
         self.assertEqual(node.to_html(), "<p><b>This text is bold!</b><i>This text is fancy!</i>No tags for this text!</p>")
 
+        node2 = ParentNode(
+                "p",
+                [
+                    ParentNode(
+                        "p",
+                        [
+                            LeafNode("i", "fancy text"),
+                            LeafNode("b", "bold text")
+                        ]
+                    ),
+                    LeafNode("b", "more bold text")
+                ]
+        )
+        self.assertEqual(node2.to_html(), "<p><p><i>fancy text</i><b>bold text</b></p><b>more bold text</b></p>")
+
+
+
         self.assertRaises(ValueError, ParentNode().to_html)
         self.assertRaises(ValueError, ParentNode(children=[LeafNode("b", "Bold text")]).to_html)
 
