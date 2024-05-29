@@ -16,8 +16,16 @@ class HtmlNode:
             result += f' {key}="{self.props[key]}"'
         return result
 
+    def __eq__(self, other):
+        if self.tag == other.tag:
+            if self.value == other.value:
+                if self.children == other.children:
+                    if self.props == other.props:
+                        return True
+        return False
+
     def __repr__(self):
-        return f"HtmlNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f'HtmlNode({self.tag}, {self.value}, {self.children}, {self.props})'
 
 class LeafNode(HtmlNode):
     def __init__(self, tag=None, value=None, props=None):
@@ -30,6 +38,9 @@ class LeafNode(HtmlNode):
             return f'{self.value}'
          
         return f'<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>'
+
+    def __repr__(self):
+        return f'LeafNode({self.tag}, {self.value}, {self.props})'
 
 class ParentNode(HtmlNode):
     def __init__(self, tag=None, children=None, props=None):
@@ -46,3 +57,6 @@ class ParentNode(HtmlNode):
             result += child.to_html()
         result += f'</{self.tag}>'
         return result
+
+    def __repr__(self):
+        return f'ParentNode({self.tag}, {self.children}, {self.props})'
