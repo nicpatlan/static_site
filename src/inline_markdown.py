@@ -31,7 +31,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if not closing_delimiter_found:
                 raise Exception("could not find closing delimiter")
         else:
-            new_nodes.extend(node)
+            new_nodes.append(node)
     return new_nodes
 
 def extract_markdown_images(text):
@@ -39,3 +39,57 @@ def extract_markdown_images(text):
 
 def extract_markdown_links(text):
     return re.findall(r"\[(.*?)\]\((.*?)\)", text)
+
+def split_nodes_image(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        if type(node) is TextNode:
+            image_tuples = extract_markdown_images(node.text)
+            if not image_tuples:
+                new_nodes.append(node)
+                continue
+            split_list = []
+            for image in image_tuples:
+                if not split_list:
+                    split_list = node.text.split(f"![{image[0]}]({image[1]})", maxsplit=1)
+                else:
+                    split_list = split_list[0].split(f"![{image[0]}]({image[1]})", maxsplit=1)
+                if split_list[0] != "":
+                    new_nodes.extend([TextNode(split_list.pop(0), text_type_text), 
+                                      TextNode(image[0], text_type_image, image[1])
+                                     ])
+                else:
+                    split_list.pop(0)
+                    new_nodes.append(TextNode(image[0], text_type_image, image[1]))
+            if split_list and split_list[0] != "":
+                new_nodes.append(TextNode(split_list.pop(0), text_type_text))
+        else:
+            new_nodes.append(node)
+    return new_nodes
+
+def split_nodes_link(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        if type(node) is TextNode:
+            link_tuples = extract_markdown_links(node.text)
+            if not link_tuples:
+                new_nodes.append(node)
+                continue
+            split_list = []
+            for link in link_tuples:
+                if not split_list:
+                    split_list = node.text.split(f"[{link[0]}]({link[1]})", maxsplit=1)
+                else:
+                    split_list = split_list[0].split(f"[{link[0]}]({link[1]})", maxsplit=1)
+                if split_list[0] != "":
+                    new_nodes.extend([TextNode(split_list.pop(0), text_type_text), 
+                                      TextNode(link[0], text_type_link, link[1])
+                                     ])
+                else:
+                    split_list.pop(0)
+                    new_nodes.append(TextNode(link[0], text_type_link, link[1]))
+            if split_list and split_list[0] != "":
+                new_nodes.append(TextNode(split_list.pop(0), text_type_text))
+        else:
+            new_nodes.append(node)
+    return new_nodes
