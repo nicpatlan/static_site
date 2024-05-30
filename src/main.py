@@ -1,13 +1,14 @@
 from textnode import TextNode
-from inline_markdown import (extract_markdown_images,
-                             extract_markdown_links)
+from inline_markdown import text_to_textnodes
 
 def main():
     node = TextNode("This is a text node", "bold", "https://www.google.com")
 
     print(node)
 
-    print(extract_markdown_images("two images ![some alt text](https://google.com) and ![more alt text](https://www.github.com)"))
-    print(extract_markdown_links("a link here [link](https://www.google.com) and another [github](https://github.com)"))
+    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://www.github.com)"
+
+    print(text)
+    print(text_to_textnodes(text))
 
 main()

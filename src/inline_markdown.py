@@ -10,7 +10,7 @@ from textnode import (TextNode,
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for node in old_nodes:
-        if type(node) is TextNode:
+        if type(node) is TextNode and node.text_type == text_type_text:
             split_list = node.text.split(delimiter, maxsplit=1)
             closing_delimiter_found = False
             while split_list:
@@ -22,6 +22,8 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 else:
                     if split_list[0] != "":
                         new_nodes.extend([TextNode(split_list.pop(0), text_type_text)])
+                        if len(split_list) == 0:
+                            closing_delimiter_found = True
                     else:
                         split_list.pop(0)
                 if split_list:
@@ -93,3 +95,16 @@ def split_nodes_link(old_nodes):
         else:
             new_nodes.append(node)
     return new_nodes
+
+def text_to_textnodes(text):
+    node_list = split_nodes_delimiter(
+            split_nodes_delimiter(
+                split_nodes_delimiter([TextNode(text, text_type_text)],
+                                  "**", 
+                                  text_type_bold),
+                "`",
+                text_type_code),
+            "*",
+            text_type_italic)
+    return split_nodes_link(split_nodes_image(node_list))
+
