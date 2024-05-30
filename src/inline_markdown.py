@@ -99,12 +99,16 @@ def split_nodes_link(old_nodes):
 def text_to_textnodes(text):
     node_list = split_nodes_delimiter(
             split_nodes_delimiter(
-                split_nodes_delimiter([TextNode(text, text_type_text)],
-                                  "**", 
-                                  text_type_bold),
+                split_nodes_delimiter(
+                    [TextNode(text, text_type_text)],
+                    "**", 
+                    text_type_bold
+                    ),
                 "`",
-                text_type_code),
+                text_type_code
+                ),
             "*",
-            text_type_italic)
+            text_type_italic
+            )
     return split_nodes_link(split_nodes_image(node_list))
 

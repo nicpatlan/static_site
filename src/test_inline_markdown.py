@@ -3,7 +3,8 @@ from inline_markdown import (split_nodes_delimiter,
                              extract_markdown_images,
                              extract_markdown_links,
                              split_nodes_image,
-                             split_nodes_link)
+                             split_nodes_link,
+                             text_to_textnodes)
 
 from textnode import (TextNode,
                       text_type_text,
@@ -131,6 +132,39 @@ class TestInlineMarkdown(unittest.TestCase):
         new_nodes = split_nodes_link(link_only)
         self.assertEqual(new_nodes, [TextNode("a link here", text_type_link, "https://www.google.com")])
 
+    def test_text_to_textnodes(self):
+        text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://www.github.com)"
+        new_nodes = text_to_textnodes(text)
+        self.assertEqual(new_nodes, 
+                         [TextNode("This is ", text_type_text),
+                          TextNode("text", text_type_bold),
+                          TextNode(" with an ", text_type_text),
+                          TextNode("italic", text_type_italic),
+                          TextNode(" word and a ", text_type_text),
+                          TextNode("code block", text_type_code),
+                          TextNode(" and an ", text_type_text),
+                          TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                          TextNode(" and a ", text_type_text),
+                          TextNode("link", text_type_link, "https://www.github.com")
+                         ]
+        )
+
+        text = "nothing special in this text node"
+        new_nodes = text_to_textnodes(text)
+        self.assertEqual(new_nodes, [TextNode("nothing special in this text node", text_type_text)])
+
+        text = "![image](https://www.google.com) **bold** move with an image at the start, *fancy* to have some code at the end too `code block`"
+        new_nodes = text_to_textnodes(text)
+        self.assertEqual(new_nodes,
+                         [TextNode("image", text_type_image, "https://www.google.com"),
+                          TextNode(" ", text_type_text),
+                          TextNode("bold", text_type_bold),
+                          TextNode(" move with an image at the start, ", text_type_text),
+                          TextNode("fancy", text_type_italic),
+                          TextNode(" to have some code at the end too ", text_type_text),
+                          TextNode("code block", text_type_code)
+                         ]
+        )
 
 if __name__ == "__main__":
     unittest.main()
