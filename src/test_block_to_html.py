@@ -154,7 +154,9 @@ This is the same paragraph on a new line
 * with items
 """
         parent_node = markdown_to_html_node(markdown)
-        print(parent_node.to_html())
+        test_solution = """<div><p>This is <b>bolded</b> paragraph</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here
+This is the same paragraph on a new line</p><ul><li>This is a list</li><li>with items</li></ul></div>"""
+        self.assertEqual(parent_node.to_html(), test_solution)
 
 if __name__ == "__main__":
     unittest.main()
