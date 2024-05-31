@@ -43,7 +43,7 @@ class TestTextNode(unittest.TestCase):
     def test_text_node_to_html_node(self):
         node = TextNode("some text", text_type_text)
         new_node = text_node_to_html_node(node)
-        self.assertEqual(new_node, LeafNode("some text"))
+        self.assertEqual(new_node, LeafNode(value="some text"))
 
         node = TextNode("bold text", text_type_bold)
         new_node = text_node_to_html_node(node)

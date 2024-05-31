@@ -24,7 +24,7 @@ class TestBlockToHtml(unittest.TestCase):
         parent_node = heading_block_to_htmlnode(block)
         self.assertEqual(parent_node,
                          ParentNode("h1", 
-                                    [LeafNode("Heading 1")]
+                                    [LeafNode(None, "Heading 1")]
                                    )
                         )
 
@@ -33,7 +33,7 @@ class TestBlockToHtml(unittest.TestCase):
         parent_node = paragraph_block_to_htmlnode(block)
         self.assertEqual(parent_node,
                          ParentNode("p", 
-                                    [LeafNode("a simple paragraph")]
+                                    [LeafNode(value="a simple paragraph")]
                                    )
                         )
 
@@ -42,7 +42,7 @@ class TestBlockToHtml(unittest.TestCase):
         parent_node = quote_block_to_htmlnode(block)
         self.assertEqual(parent_node,
                          ParentNode("blockquote",
-                                    [LeafNode(" a simple quote")]
+                                    [LeafNode(value=" a simple quote")]
                                    )
                         )
 
@@ -61,15 +61,15 @@ class TestBlockToHtml(unittest.TestCase):
         self.assertEqual(parent_node,
                          ParentNode("ul",
                                      [LeafNode("li", ""),
-                                      LeafNode("a "),
+                                      LeafNode(value="a "),
                                       LeafNode("b", "bold"),
-                                      LeafNode(" item"),
+                                      LeafNode(value=" item"),
                                       LeafNode("li", ""),
                                       LeafNode("li", ""),
-                                      LeafNode("another item"),
+                                      LeafNode(value="another item"),
                                       LeafNode("li", ""),
                                       LeafNode("li", ""),
-                                      LeafNode("and one more"),
+                                      LeafNode(value="and one more"),
                                       LeafNode("li", "")
                                      ]
                                    )
@@ -81,15 +81,15 @@ class TestBlockToHtml(unittest.TestCase):
         self.assertEqual(parent_node,
                          ParentNode("ol",
                                     [LeafNode("li", ""),
-                                      LeafNode("first item"),
+                                      LeafNode(value="first item"),
                                       LeafNode("li", ""),
                                       LeafNode("li", ""),
-                                      LeafNode("second item"),
+                                      LeafNode(value="second item"),
                                       LeafNode("li", ""),
                                       LeafNode("li", ""),
-                                      LeafNode("third "),
+                                      LeafNode(value="third "),
                                       LeafNode("i", "italic"),
-                                      LeafNode(" item"),
+                                      LeafNode(value=" item"),
                                       LeafNode("li", "")
                                      ]
                                    )
@@ -110,30 +110,30 @@ This is the same paragraph on a new line
                          ParentNode("div", 
                                     [ParentNode("p", 
                                                 [
-                                                    LeafNode("This is ", None, None), 
-                                                    LeafNode("b", "bolded", None), 
-                                                    LeafNode(" paragraph", None, None)
+                                                    LeafNode(None, "This is "), 
+                                                    LeafNode("b", "bolded"), 
+                                                    LeafNode(None, " paragraph")
                                                 ], 
                                                 None
                                                ), 
                                      ParentNode("p", 
                                                 [
-                                                    LeafNode("This is another paragraph with ", None, None), 
-                                                    LeafNode("i", "italic", None), 
-                                                    LeafNode(" text and ", None, None), 
-                                                    LeafNode("code", "code", None), 
-                                                    LeafNode(" here\nThis is the same paragraph on a new line", None, None)
+                                                    LeafNode(None, "This is another paragraph with "), 
+                                                    LeafNode("i", "italic"), 
+                                                    LeafNode(None, " text and "), 
+                                                    LeafNode("code", "code"), 
+                                                    LeafNode(None, " here\nThis is the same paragraph on a new line")
                                                 ], 
                                                 None
                                                ), 
                                      ParentNode("ul", 
                                                 [
+                                                    LeafNode("li", ""), 
+                                                    LeafNode(None, "This is a list"), 
                                                     LeafNode("li", "", None), 
-                                                    LeafNode("This is a list", None, None), 
                                                     LeafNode("li", "", None), 
-                                                    LeafNode("li", "", None), 
-                                                    LeafNode("with items", None, None), 
-                                                    LeafNode("li", "", None)
+                                                    LeafNode(None, "with items"), 
+                                                    LeafNode("li", "")
                                                 ], 
                                                 None
                                                )], 
@@ -153,19 +153,19 @@ This is the same paragraph on a new line
                          ParentNode("div", 
                                     [ParentNode("p", 
                                                 [
-                                                    LeafNode("This is ", None, None), 
+                                                    LeafNode(None, "This is "), 
                                                     LeafNode("b", "bolded", None), 
-                                                    LeafNode(" paragraph", None, None)
+                                                    LeafNode(None, " paragraph")
                                                 ], 
                                                 None
                                                ), 
                                      ParentNode("p", 
                                                 [
-                                                    LeafNode("This is another paragraph with ", None, None), 
-                                                    LeafNode("i", "italic", None), 
-                                                    LeafNode(" text and ", None, None), 
-                                                    LeafNode("code", "code", None), 
-                                                    LeafNode(" here\nThis is the same paragraph on a new line", None, None)
+                                                    LeafNode(None, "This is another paragraph with "), 
+                                                    LeafNode("i", "italic"), 
+                                                    LeafNode(None, " text and "), 
+                                                    LeafNode("code", "code"), 
+                                                    LeafNode(None, " here\nThis is the same paragraph on a new line")
                                                 ], 
                                                 None
                                                ), 
