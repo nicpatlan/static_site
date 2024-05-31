@@ -1,14 +1,23 @@
-from textnode import TextNode
-from inline_markdown import text_to_textnodes
+import os, shutil
+
+def copy_directory_to_directory(path, base_dir):
+    if os.path.exists(path):
+        if os.path.exists(base_dir):
+            shutil.rmtree(base_dir)
+        os.mkdir(base_dir)
+        file_dir_list = os.listdir(path)
+        for element in file_dir_list:
+            element_path = os.path.join(path, element)
+            if os.path.isfile(element_path):
+                base_dir_path = os.path.join(base_dir, element)
+                shutil.copy(element_path, base_dir_path)
+            else:
+                new_base_dir = os.path.join(base_dir, element)
+                copy_directory_to_directory(element_path, new_base_dir)
+    else:
+        raise Exception("invalid directory path")
 
 def main():
-    node = TextNode("This is a text node", "bold", "https://www.google.com")
-
-    print(node)
-
-    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://www.github.com)"
-
-    print(text)
-    print(text_to_textnodes(text))
+    copy_directory_to_directory("static", "public")
 
 main()
