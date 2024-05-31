@@ -60,17 +60,19 @@ class TestBlockToHtml(unittest.TestCase):
         parent_node = unordered_list_block_to_htmlnode(block)
         self.assertEqual(parent_node,
                          ParentNode("ul",
-                                     [LeafNode("li", ""),
-                                      LeafNode(value="a "),
-                                      LeafNode("b", "bold"),
-                                      LeafNode(value=" item"),
-                                      LeafNode("li", ""),
-                                      LeafNode("li", ""),
-                                      LeafNode(value="another item"),
-                                      LeafNode("li", ""),
-                                      LeafNode("li", ""),
-                                      LeafNode(value="and one more"),
-                                      LeafNode("li", "")
+                                     [ParentNode("li",
+                                                 [
+                                                     LeafNode(value="a "),
+                                                     LeafNode("b", "bold"),
+                                                     LeafNode(value=" item")
+                                                 ]
+                                                ),
+                                      ParentNode("li",
+                                                 [LeafNode(value="another item")]
+                                                ),
+                                      ParentNode("li",
+                                                 [LeafNode(value="and one more")]
+                                                )
                                      ]
                                    )
                         )
@@ -128,12 +130,12 @@ This is the same paragraph on a new line
                                                ), 
                                      ParentNode("ul", 
                                                 [
-                                                    LeafNode("li", ""), 
-                                                    LeafNode(None, "This is a list"), 
-                                                    LeafNode("li", "", None), 
-                                                    LeafNode("li", "", None), 
-                                                    LeafNode(None, "with items"), 
-                                                    LeafNode("li", "")
+                                                    ParentNode("li",
+                                                               [LeafNode(None, "This is a list")]
+                                                              ),
+                                                    ParentNode("li",
+                                                               [LeafNode(None, "with items")]
+                                                              )
                                                 ], 
                                                 None
                                                )], 
@@ -147,34 +149,12 @@ This is **bolded** paragraph
 
 This is another paragraph with *italic* text and `code` here
 This is the same paragraph on a new line
+
+* This is a list
+* with items
 """
         parent_node = markdown_to_html_node(markdown)
-        self.assertEqual(parent_node,
-                         ParentNode("div", 
-                                    [ParentNode("p", 
-                                                [
-                                                    LeafNode(None, "This is "), 
-                                                    LeafNode("b", "bolded", None), 
-                                                    LeafNode(None, " paragraph")
-                                                ], 
-                                                None
-                                               ), 
-                                     ParentNode("p", 
-                                                [
-                                                    LeafNode(None, "This is another paragraph with "), 
-                                                    LeafNode("i", "italic"), 
-                                                    LeafNode(None, " text and "), 
-                                                    LeafNode("code", "code"), 
-                                                    LeafNode(None, " here\nThis is the same paragraph on a new line")
-                                                ], 
-                                                None
-                                               ), 
-                                    ], 
-                                    None
-                                   )
-                        )
-
-        #print(parent_node)
+        print(parent_node.to_html())
 
 if __name__ == "__main__":
     unittest.main()

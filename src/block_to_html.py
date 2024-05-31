@@ -73,11 +73,13 @@ def unordered_list_block_to_htmlnode(block):
     for item in list_items:
         if item == "":
             continue
-        html_nodes.append(LeafNode("li", ""))
+        children = []
+        #html_nodes.append(LeafNode("li", ""))
         item_nodes = text_to_textnodes(item[2:])
         for node in item_nodes:
-            html_nodes.append(text_node_to_html_node(node))
-        html_nodes.append(LeafNode("li", ""))
+            children.append(text_node_to_html_node(node))
+        #html_nodes.append(LeafNode("li", ""))
+        html_nodes.append(ParentNode("li", children))
 
     return ParentNode("ul", html_nodes)
 
