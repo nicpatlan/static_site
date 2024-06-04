@@ -32,7 +32,7 @@ class LeafNode(HtmlNode):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
-        if not self.value:
+        if not self.value and self.tag != "img":
             raise ValueError("no value assigned for leaf node")
         elif not self.tag:
             return f'{self.value}'
