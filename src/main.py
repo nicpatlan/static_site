@@ -1,23 +1,10 @@
-import os, shutil
+from copydir import copy_directory_to_directory
 
-def copy_directory_to_directory(path, base_dir):
-    if os.path.exists(path):
-        if os.path.exists(base_dir):
-            shutil.rmtree(base_dir)
-        os.mkdir(base_dir)
-        file_dir_list = os.listdir(path)
-        for element in file_dir_list:
-            element_path = os.path.join(path, element)
-            if os.path.isfile(element_path):
-                base_dir_path = os.path.join(base_dir, element)
-                shutil.copy(element_path, base_dir_path)
-            else:
-                new_base_dir = os.path.join(base_dir, element)
-                copy_directory_to_directory(element_path, new_base_dir)
-    else:
-        raise Exception("invalid directory path")
+source_dir = "static"
+destination_dir = "public"
+
 
 def main():
-    copy_directory_to_directory("static", "public")
+    copy_directory_to_directory(source_dir, destination_dir)
 
 main()
